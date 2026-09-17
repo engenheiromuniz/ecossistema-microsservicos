@@ -1,0 +1,16 @@
+# Java / Maven
+target/
+*.class
+*.jar
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Angular (usaremos na Fase 8)
+node_modules/
+dist/
+
+# OS
+.DS_Store
