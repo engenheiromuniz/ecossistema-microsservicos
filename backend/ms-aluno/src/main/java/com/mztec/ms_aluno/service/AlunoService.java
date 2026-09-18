@@ -38,4 +38,17 @@ public class AlunoService {
     private AlunoResponseDTO toResponseDTO(Aluno aluno) {
         return new AlunoResponseDTO(aluno.getId(), aluno.getNome(), aluno.getEmail(), aluno.getVagasDisponiveis());
     }
+    
+    public AlunoResponseDTO decrementarVaga(Long id) {
+        Aluno aluno = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado com id: " + id));
+
+        if (aluno.getVagasDisponiveis() == null || aluno.getVagasDisponiveis() <= 0) {
+            throw new IllegalStateException("Aluno sem vagas disponíveis para matrícula");
+        }
+
+        aluno.setVagasDisponiveis(aluno.getVagasDisponiveis() - 1);
+        Aluno atualizado = repository.save(aluno);
+        return toResponseDTO(atualizado);
+    }    
 }
