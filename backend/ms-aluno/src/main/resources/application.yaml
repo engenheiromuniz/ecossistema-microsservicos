@@ -1,0 +1,32 @@
+server:
+  port: 8081   # porta fixa desta instância (o Eureka registra qual porta cada instância usa)
+
+spring:
+  application:
+    name: ms-aluno   # ESSENCIAL: é este nome que aparece no Eureka e que o Gateway/Feign usam para localizar o serviço
+
+  datasource:
+    url: jdbc:h2:mem:alunodb      # banco em memória, some ao reiniciar (ok para estudo)
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    hibernate:
+      ddl-auto: update            # cria/atualiza as tabelas automaticamente a partir das entidades
+    show-sql: true                # mostra os SQLs gerados no console — ótimo para aprender JPA
+    properties:
+      hibernate:
+        format_sql: true
+
+  h2:
+    console:
+      enabled: true                # habilita console web do H2
+      path: /h2-console            # acessível em http://localhost:8081/h2-console
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
