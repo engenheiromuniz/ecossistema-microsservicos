@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,4 +45,9 @@ public class AlunoController {
     public AlunoResponseDTO buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
     }
+    
+    @PatchMapping("/{id}/decrementar-vaga")
+    public AlunoResponseDTO decrementarVaga(@PathVariable Long id) {
+        return service.decrementarVaga(id);
+    }    
 }
