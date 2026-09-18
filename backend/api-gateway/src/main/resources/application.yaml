@@ -1,0 +1,33 @@
+server:
+  port: 8080   # ÚNICA porta que o cliente (Postman/Angular) vai conhecer
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false   # vamos declarar rotas manualmente (mais didático que auto-roteamento)
+      routes:
+        - id: ms-aluno-route
+          uri: lb://ms-aluno            # "lb://" = usa o LoadBalancer + Eureka para achar o serviço "ms-aluno"
+          predicates:
+            - Path=/alunos/**           # qualquer requisição para /alunos/** vai para ms-aluno
+
+        - id: ms-matricula-route
+          uri: lb://ms-matricula
+          predicates:
+            - Path=/matriculas/**
+
+        - id: ms-notificacao-route
+          uri: lb://ms-notificacao
+          predicates:
+            - Path=/notificacoes/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/   # onde está o Eureka Server
+  instance:
+    prefer-ip-address: true
