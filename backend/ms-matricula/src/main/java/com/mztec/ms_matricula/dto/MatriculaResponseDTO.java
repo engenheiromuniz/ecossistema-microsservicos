@@ -6,5 +6,7 @@ public record MatriculaResponseDTO(
         Long id,
         Long alunoId,
         String nomeAluno,
+        Long disciplinaId,
+        String nomeDisciplina,
         LocalDateTime dataMatricula
 ) {}

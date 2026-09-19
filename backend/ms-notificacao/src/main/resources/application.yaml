@@ -1,0 +1,35 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: ms-notificacao
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: ms-notificacao
+      auto-offset-reset: earliest   # se for a primeira vez que esse grupo lê o tópico, começa do início
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        # O produtor (ms-matricula) manda, dentro dos headers da mensagem, o nome
+        # completo da classe Java dele: com.mztec.ms_matricula.event.MatriculaRealizadaEvent.
+        # Só que essa classe NÃO existe aqui no ms-notificacao — nós temos a NOSSA
+        # própria cópia, em outro pacote. Por isso:
+        #   - use.type.headers: false  -> ignora o header de tipo vindo do produtor
+        #   - value.default.type: ...  -> força o Spring a sempre desserializar
+        #                                 pra ESTA classe local, não importa o header
+        #   - trusted.packages: "*"    -> permite desserializar classes de qualquer pacote
+        #                                 (em produção, o ideal é restringir aos seus próprios pacotes)
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.mztec.ms_notificacao.event.MatriculaRealizadaEvent
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: false
+    hostname: localhost

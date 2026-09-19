@@ -6,7 +6,7 @@ spring:
     name: ms-aluno   # ESSENCIAL: é este nome que aparece no Eureka e que o Gateway/Feign usam para localizar o serviço
 
   datasource:
-    url: jdbc:h2:mem:alunodb      # banco em memória, some ao reiniciar (ok para estudo)
+    url: jdbc:h2:mem:alunodb      # banco em memória — os dados somem ao reiniciar (ok para estudo)
     driver-class-name: org.h2.Driver
     username: sa
     password: ""
@@ -21,7 +21,7 @@ spring:
 
   h2:
     console:
-      enabled: true                # habilita console web do H2
+      enabled: true                # habilita o console web do H2
       path: /h2-console            # acessível em http://localhost:8081/h2-console
 
 eureka:
@@ -29,4 +29,5 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
   instance:
-    prefer-ip-address: true
+    prefer-ip-address: false
+    hostname: localhost

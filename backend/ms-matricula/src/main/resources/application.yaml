@@ -5,6 +5,14 @@ spring:
   application:
     name: ms-matricula
 
+  kafka:
+    bootstrap-servers: localhost:9092    # onde está o broker Kafka (fora do Docker, então usa PLAINTEXT/localhost)
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      # StringSerializer para a KEY (identificador da mensagem)
+      # JsonSerializer para o VALUE (o Spring converte nosso objeto Java em JSON automaticamente)
+
   datasource:
     url: jdbc:h2:mem:matriculadb
     driver-class-name: org.h2.Driver
@@ -24,4 +32,10 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
   instance:
-    prefer-ip-address: true
+    prefer-ip-address: false
+    hostname: localhost
+
+# Ativa a implementação OkHttp para as chamadas do Feign, em vez do client HTTP padrão
+feign:
+  okhttp:
+    enabled: true

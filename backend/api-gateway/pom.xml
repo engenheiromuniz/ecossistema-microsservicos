@@ -21,16 +21,19 @@
     </properties>
 
     <dependencies>
+        <!-- Roteador HTTP: recebe as chamadas do cliente e distribui pros microsserviços certos -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
 
+        <!-- Permite o Gateway "enxergar" os serviços registrados no Eureka -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
+        <!-- Necessário para o esquema "lb://" (load balancer) funcionar nas rotas -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>

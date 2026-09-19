@@ -1,13 +1,24 @@
 server:
-  port: 8761
+  port: 8761   # porta padrão do Eureka — o resto dos serviços aponta pra cá
 
 spring:
   application:
     name: eureka-server
 
+# Configuração ESSENCIAL para um Eureka Server standalone (uma única instância,
+# sem replicação com outros Eureka Servers):
+#   - register-with-eureka: false -> o servidor não tenta se registrar nele mesmo
+#   - fetch-registry: false       -> o servidor não busca a lista de instâncias
+#                                    (não precisa, ele É o registro)
+#
+# IMPORTANTE: NÃO adicione "eureka.client.enabled: false" aqui. Isso desliga
+# TODA a autoconfiguração do client, incluindo peças internas que o próprio
+# EurekaServerAutoConfiguration precisa para funcionar (isso causava um erro
+# de "ApplicationInfoManager não encontrado" que só descobrimos depois de
+# bastante investigação).
 eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
   server:
-    enable-self-preservation: false
+    enable-self-preservation: false   # opcional, útil em dev: evita o Eureka "proteger" instâncias já mortas

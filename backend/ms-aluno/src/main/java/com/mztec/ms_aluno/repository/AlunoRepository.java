@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.mztec.ms_aluno.model.Aluno;
 
-public interface AlunoRepository extends JpaRepository<Aluno, Long>{
+// Ao estender JpaRepository<Aluno, Long>, ganhamos de graça métodos como
+// save(), findById(), findAll(), deleteById(), etc — sem escrever nenhum SQL.
+public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
 }

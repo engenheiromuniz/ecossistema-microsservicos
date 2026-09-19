@@ -1,11 +1,9 @@
 package com.mztec.ms_matricula.dto;
 
-//Este DTO espelha o formato de resposta que ms-aluno expõe.
-//Em microsserviços, cada serviço tem seus próprios DTOs "de visão" —
-//não compartilhamos classes entre projetos, evitando acoplamento forte.
+// Espelha o formato de resposta ATUAL do ms-aluno — agora sem vagasDisponiveis,
+// já que essa informação não existe mais do lado do Aluno.
 public record AlunoResponseDTO(
-     Long id,
-     String nome,
-     String email,
-     Integer vagasDisponiveis
+        Long id,
+        String nome,
+        String email
 ) {}

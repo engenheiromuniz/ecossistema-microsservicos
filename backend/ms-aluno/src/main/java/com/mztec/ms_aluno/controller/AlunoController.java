@@ -1,12 +1,9 @@
 package com.mztec.ms_aluno.controller;
 
-
-
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +17,10 @@ import com.mztec.ms_aluno.service.AlunoService;
 
 import jakarta.validation.Valid;
 
+// O endpoint /alunos/{id}/decrementar-vaga FOI REMOVIDO — o ms-aluno agora só
+// cuida de dados de aluno (CRUD simples). Nenhuma regra de "vaga" mora mais aqui.
 @RestController
-@RequestMapping("/alunos")   // este caminho bate com o predicate Path=/alunos/** que configuramos no Gateway
+@RequestMapping("/alunos")
 public class AlunoController {
 
     private final AlunoService service;
@@ -45,9 +44,4 @@ public class AlunoController {
     public AlunoResponseDTO buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
     }
-    
-    @PatchMapping("/{id}/decrementar-vaga")
-    public AlunoResponseDTO decrementarVaga(@PathVariable Long id) {
-        return service.decrementarVaga(id);
-    }    
 }

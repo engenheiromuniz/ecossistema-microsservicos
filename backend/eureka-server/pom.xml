@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>com.ecossistema</groupId>
@@ -21,19 +21,12 @@
     </properties>
 
     <dependencies>
-        <!-- Servidor Eureka do Spring Cloud -->
+        <!-- Servidor Eureka do Spring Cloud: o "catálogo telefônico" dos microsserviços -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
 
-        <!-- Client gerenciado pelo Spring Cloud BOM — fornece corretamente o TransportClientFactories -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-
-        <!-- Dependência de Testes padrão do Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

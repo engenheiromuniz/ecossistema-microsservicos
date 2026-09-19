@@ -1,5 +1,5 @@
 server:
-  port: 8080   # ÚNICA porta que o cliente (Postman/Angular) vai conhecer
+  port: 8080   # ÚNICA porta que o cliente final (Postman/Angular/etc) precisa conhecer
 
 spring:
   application:
@@ -8,26 +8,28 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: false   # vamos declarar rotas manualmente (mais didático que auto-roteamento)
+          enabled: false   # roteamento manual (mais didático que o automático) — cada rota é explícita abaixo
       routes:
         - id: ms-aluno-route
-          uri: lb://ms-aluno            # "lb://" = usa o LoadBalancer + Eureka para achar o serviço "ms-aluno"
+          uri: lb://ms-aluno
           predicates:
-            - Path=/alunos/**           # qualquer requisição para /alunos/** vai para ms-aluno
+            - Path=/alunos/**
 
         - id: ms-matricula-route
           uri: lb://ms-matricula
           predicates:
             - Path=/matriculas/**
 
-        - id: ms-notificacao-route
-          uri: lb://ms-notificacao
+        # Disciplina mora dentro do ms-matricula (mesmo serviço), então a rota
+        # aponta pro mesmo destino da rota acima — só muda o prefixo da URL.
+        - id: ms-disciplina-route
+          uri: lb://ms-matricula
           predicates:
-            - Path=/notificacoes/**
+            - Path=/disciplinas/**
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/   # onde está o Eureka Server
+      defaultZone: http://localhost:8761/eureka/
   instance:
     prefer-ip-address: true
