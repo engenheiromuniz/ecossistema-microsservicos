@@ -1,0 +1,44 @@
+version: '3.8'
+
+# Este arquivo sobe dois containers:
+# 1) kafka       -> o broker de mensageria (onde os tópicos e mensagens vivem)
+# 2) kafka-ui    -> uma interface web para inspecionar tópicos e mensagens
+#
+# ATENÇÃO AO CONCEITO DE "LISTENER DUPLO":
+# O Kafka precisa de um endereço diferente para cada tipo de "cliente":
+#   - PLAINTEXT (localhost:9092) -> usado pelas aplicações Spring Boot que rodam
+#                                    FORA do Docker (direto na sua máquina/JVM local).
+#   - INTERNAL  (kafka:29092)    -> usado por containers que rodam DENTRO da mesma
+#                                    rede Docker (ex: o próprio kafka-ui).
+# Sem essa separação, um dos dois lados nunca consegue se conectar.
+
+services:
+  kafka:
+    image: apache/kafka:3.7.1
+    container_name: kafka
+    ports:
+      - "9092:9092"       # porta que suas aplicações Spring Boot (fora do Docker) vão usar
+    environment:
+      # 👇 Corrigido: Removido o hífen para seguir o padrão do resto do seu arquivo
+      PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/kafka/bin"
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,INTERNAL://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,INTERNAL://kafka:29092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8090:8080"        # interface web: http://localhost:8090
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092   # agora usa o listener INTERNAL
+    depends_on:
+      - kafka

@@ -2,7 +2,8 @@ package com.mztec.ms_aluno.model;
 
 import jakarta.persistence.*;
 
-
+// vagasDisponiveis foi REMOVIDO daqui — nunca foi responsabilidade do Aluno.
+// Agora essa informação mora na entidade Disciplina, dentro do ms-matricula.
 @Entity
 @Table(name = "aluno")
 public class Aluno {
